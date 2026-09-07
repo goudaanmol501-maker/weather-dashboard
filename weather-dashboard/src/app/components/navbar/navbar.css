@@ -1,0 +1,223 @@
+/* ===== NAVBAR WRAPPER ===== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(3, 7, 18, 0.97);
+    border-bottom: 1px solid #1f2937;
+    backdrop-filter: blur(12px);
+    padding: 14px 24px 10px;
+}
+
+/* ===== TOP ROW ===== */
+.navbar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* ===== LOGO ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.logo-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.logo-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f9fafb;
+    letter-spacing: 3px;
+    font-family: 'Courier New', monospace;
+    line-height: 1;
+}
+
+.logo-accent {
+    color: #1bbcd8;
+}
+
+.logo-sub {
+    font-size: 9px;
+    color: #4b5563;
+    letter-spacing: 2px;
+    font-family: 'Courier New', monospace;
+    margin-top: 3px;
+}
+
+/* ===== SEARCH WRAPPER ===== */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    max-width: 500px;
+}
+
+/* ===== SEARCH BOX ===== */
+.search-box {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box.focused {
+    border-color: #1bbcd8;
+    box-shadow: 0 0 0 3px rgba(27, 188, 216, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 13px;
+    color: #4b5563;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f9fafb;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 10px 36px 10px 36px;
+}
+
+.search-input::placeholder {
+    color: #4b5563;
+    font-family: 'Courier New', monospace;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #4b5563;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.clear-btn:hover {
+    color: #f9fafb;
+}
+
+/* ===== SEARCH BUTTON ===== */
+.search-btn {
+    padding: 10px 18px;
+    background: #1bbcd8;
+    border: none;
+    border-radius: 10px;
+    color: #030712;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.search-btn:hover {
+    background: #17a8c2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(27, 188, 216, 0.3);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== QUICK CITIES ===== */
+.quick-cities {
+    max-width: 1100px;
+    margin: 10px auto 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quick-label {
+    font-size: 9px;
+    color: #4b5563;
+    letter-spacing: 2px;
+    font-family: 'Courier New', monospace;
+    flex-shrink: 0;
+}
+
+.quick-btn {
+    padding: 5px 12px;
+    background: transparent;
+    border: 1px solid #1f2937;
+    border-radius: 20px;
+    color: #6b7280;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-btn:hover {
+    border-color: #1bbcd8;
+    color: #1bbcd8;
+    background: rgba(27, 188, 216, 0.05);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+    .navbar {
+        padding: 12px 14px 8px;
+    }
+
+    .navbar-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .logo {
+        justify-content: center;
+    }
+
+    .search-wrapper {
+        max-width: 100%;
+    }
+
+    .search-btn {
+        padding: 9px 14px;
+        font-size: 11px;
+    }
+
+    .quick-cities {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .quick-btn {
+        font-size: 9px;
+        padding: 4px 10px;
+    }
+}

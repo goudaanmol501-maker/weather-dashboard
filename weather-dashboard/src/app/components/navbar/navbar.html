@@ -1,1 +1,52 @@
 <p>navbar works!</p>
+<nav class="navbar">
+    <div class="navbar-inner">
+
+        <!-- ===== LOGO ===== -->
+        <div class="logo">
+            <div class="logo-icon">🌤️</div>
+            <div class="logo-text">
+                <div class="logo-title">
+                    WEATHER<span class="logo-accent">DASH</span>
+                </div>
+                <div class="logo-sub">REAL-TIME FORECAST</div>
+            </div>
+        </div>
+
+        <!-- ===== SEARCH ===== -->
+        <div class="search-wrapper">
+            <div class="search-box" [class.focused]="isFocused">
+
+                <!-- search icon -->
+                <span class="search-icon">🔍</span>
+
+                <input type="text" class="search-input" [(ngModel)]="searchQuery" (keydown)="onEnter($event)"
+                    (focus)="isFocused = true" (blur)="isFocused = false" placeholder="Search city... e.g. New York" />
+
+                <!-- clear button -->
+                @if (searchQuery) {
+                <button class="clear-btn" (click)="clearSearch()">✕</button>
+                }
+
+            </div>
+
+            <!-- search button -->
+            <button class="search-btn" (click)="onSearch()">
+                SEARCH →
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ===== QUICK CITIES ===== -->
+    <div class="quick-cities">
+        <span class="quick-label">QUICK:</span>
+        @for (city of quickCities; track city) {
+        <button class="quick-btn" (click)="onQuickSearch(city)">
+            {{ city }}
+        </button>
+        }
+    </div>
+
+</nav>
