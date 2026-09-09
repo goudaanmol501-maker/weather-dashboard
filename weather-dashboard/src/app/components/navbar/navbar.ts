@@ -6,15 +6,18 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
+  styleUrls: ['./navbar.css']
 })
-export class Navbar {
+
+export class NavbarComponent {
+
   @Output() citySearched = new EventEmitter<string>();
 
   searchQuery = '';
   isFocused = false;
 
-  quickCities = ['New York', 'London', 'Tokyo', 'Dubai', 'Mumbai', 'Sydney', 'Beijing'];
+  quickCities = ['New York', 'London', 'Tokyo', 'Dubai', 'Mumbai', 'Paris'];
+
   onSearch() {
     const city = this.searchQuery.trim();
     if (!city) return;

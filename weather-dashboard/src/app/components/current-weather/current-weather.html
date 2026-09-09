@@ -1,1 +1,141 @@
 <p>current-weather works!</p>
+<div style="max-width:1100px; margin:24px auto; padding:0 20px;">
+    <div class="weather-card" [style.background]="getConditionGradient()">
+
+        <!-- Glow effect -->
+        <div class="card-glow"></div>
+
+        <!-- ===== TOP ROW — city + time ===== -->
+        <div class="card-top">
+            <div>
+                <div class="city-name">
+                    {{ weather.city }}
+                    <span class="country-badge">{{ weather.country }}</span>
+                </div>
+                <div class="coords">
+                    📍 {{ weather.lat }}°N, {{ weather.lon }}°E
+                </div>
+            </div>
+            <div class="condition-badge">
+                <img [src]="weatherService.getIconUrl(weather.icon)" [alt]="weather.condition"
+                    style="width:64px; height:64px;" />
+                <div class="condition-text">{{ weather.description | uppercase }}</div>
+            </div>
+        </div>
+
+        <!-- ===== MIDDLE — big temp ===== -->
+        <div class="temp-row">
+            <div class="temp-main">
+                {{ weather.temp }}<span class="temp-unit">°F</span>
+            </div>
+            <div class="temp-details">
+                <div class="feels-like">
+                    Feels like {{ weather.feelsLike }}°F
+                </div>
+                <div class="temp-range">
+                    <span style="color:#4ade80;">↑ {{ weather.tempMax }}°F</span>
+                    <span style="color:#f87171; margin-left:12px;">↓ {{ weather.tempMin }}°F</span>
+                </div>
+
+                <!-- rain info if raining -->
+                @if (weather.rain1h > 0) {
+                <div class="rain-info">
+                    🌧️ {{ weather.rain1h }}mm in last hour
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- ===== DIVIDER ===== -->
+        <div class="divider"></div>
+
+        <!-- ===== STATS GRID ===== -->
+        <div class="stats-grid">
+
+            <!-- Humidity -->
+            <div class="stat-card">
+                <div class="stat-icon">💧</div>
+                <div class="stat-value" style="color:#60a5fa;">
+                    {{ weather.humidity }}%
+                </div>
+                <div class="stat-label">HUMIDITY</div>
+                <div class="stat-sub">{{ getHumidityLabel() }}</div>
+                <!-- humidity bar -->
+                <div class="stat-bar">
+                    <div class="stat-bar-fill" style="background:#60a5fa;" [style.width]="weather.humidity + '%'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wind -->
+            <div class="stat-card">
+                <div class="stat-icon">💨</div>
+                <div class="stat-value" style="color:#a78bfa;">
+                    {{ weather.windSpeed }}
+                    <span style="font-size:14px;">mph</span>
+                </div>
+                <div class="stat-label">WIND SPEED</div>
+                <div class="stat-sub">
+                    {{ weatherService.getWindDirection(weather.windDeg) }}
+                    @if (weather.windGust > 0) {
+                    · Gust {{ weather.windGust }}mph
+                    }
+                </div>
+                <!-- wind direction arrow -->
+                <div style="font-size:20px; margin-top:6px;" [style]="getWindArrowStyle()">
+                    ↑
+                </div>
+            </div>
+
+            <!-- Visibility -->
+            <div class="stat-card">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-value" style="color:#34d399;">
+                    {{ weather.visibility }}
+                    <span style="font-size:14px;">km</span>
+                </div>
+                <div class="stat-label">VISIBILITY</div>
+                <div class="stat-sub">{{ getVisibilityLabel() }}</div>
+                <!-- visibility bar -->
+                <div class="stat-bar">
+                    <div class="stat-bar-fill" style="background:#34d399;"
+                        [style.width]="(weather.visibility / 10 * 100) + '%'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pressure -->
+            <div class="stat-card">
+                <div class="stat-icon">🌡️</div>
+                <div class="stat-value" style="color:#fbbf24;">
+                    {{ weather.pressure }}
+                    <span style="font-size:14px;">hPa</span>
+                </div>
+                <div class="stat-label">PRESSURE</div>
+                <div class="stat-sub">{{ getPressureLabel() }}</div>
+            </div>
+
+            <!-- Sunrise -->
+            <div class="stat-card">
+                <div class="stat-icon">🌅</div>
+                <div class="stat-value" style="color:#fb923c; font-size:20px;">
+                    {{ weatherService.formatTime(weather.sunrise) }}
+                </div>
+                <div class="stat-label">SUNRISE</div>
+                <div class="stat-sub">Morning</div>
+            </div>
+
+            <!-- Sunset -->
+            <div class="stat-card">
+                <div class="stat-icon">🌇</div>
+                <div class="stat-value" style="color:#f97316; font-size:20px;">
+                    {{ weatherService.formatTime(weather.sunset) }}
+                </div>
+                <div class="stat-label">SUNSET</div>
+                <div class="stat-sub">Evening</div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
