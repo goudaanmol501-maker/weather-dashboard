@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, inject, ChangeDetectorRef } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar';
 import { CurrentWeatherComponent } from '../../components/current-weather/current-weather';
 import { WeatherService, WeatherData } from '../../services/weather';
@@ -10,34 +10,45 @@ import { WeatherService, WeatherData } from '../../services/weather';
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  weatherData: WeatherData | null = null;
-  isLoading = false;
-  error = '';
+  private weatherService = inject(WeatherService);
+  private cdr = inject(ChangeDetectorRef);
 
-  constructor(private weatherService: WeatherService) { }
+  weatherData = signal<WeatherData | null>(null);
+  isLoading = signal<boolean>(false);
+  error = signal<string>('');
+
+  ngOnInit(): void {
+    this.onCitySearch('London');
+  }
 
   onCitySearch(city: string) {
+    console.log('City searched:', city); 
     if (!city) return;
-    this.isLoading = true;
-    this.error = '';
-    this.weatherData = null;
+    this.isLoading.set(true);
+    this.error.set('');
+    this.weatherData.set(null);
+    this.cdr.markForCheck();
 
     this.weatherService.getWeather(city).subscribe({
       next: (data) => {
-        this.weatherData = data;
-        this.isLoading = false;
+        console.log('weather data', data);
+        this.weatherData.set(data);
+        this.isLoading.set(false);
+        this.cdr.markForCheck();
       },
       error: (err) => {
-        this.isLoading = false;
+        console.error('Weather fetch error:', err);
+        this.isLoading.set(false);
         if (err.status === 404) {
-          this.error = `CITY "${city.toUpperCase()}" NOT FOUND`;
+          this.error.set(`CITY "${city.toUpperCase()}" NOT FOUND`);
         } else if (err.status === 401) {
-          this.error = 'INVALID API KEY';
+          this.error.set('INVALID API KEY');
         } else {
-          this.error = 'CONNECTION ERROR — TRY AGAIN';
+          this.error.set('CONNECTION ERROR — TRY AGAIN');
         }
+        this.cdr.markForCheck();
       }
     });
   }

@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CurrentWeather, WeatherService } from '../../services/weather';
+import { UpperCasePipe } from '@angular/common';
 @Component({
   selector: 'app-current-weather',
-  imports: [],
+  imports: [UpperCasePipe],
   templateUrl: './current-weather.html',
   styleUrl: './current-weather.css',
 })
@@ -11,11 +12,12 @@ export class CurrentWeatherComponent {
 
   constructor(public weatherService: WeatherService) { }
 
-  gitWindArrowStyle(): string {
-    return `transform: rotate(${this.weather.windDeg}deg)`;
+  getWindArrowStyle(): string {
+    return this.weather ? `transform: rotate(${this.weather.windDeg}deg)` : '';
   }
 
   getVisibilityLabel(): string {
+    if (!this.weather) return '';
     const v = this.weather.visibility;
     if (v >= 10) return 'Excellent';
     if (v >= 5) return 'Good';
@@ -23,7 +25,8 @@ export class CurrentWeatherComponent {
     return 'Poor';
   }
 
-  gitHumidityLabel(): string {
+  getHumidityLabel(): string {
+    if (!this.weather) return '';
     const h = this.weather.humidity;
     if (h >= 80) return 'Very High';
     if (h >= 60) return 'High';
@@ -32,6 +35,7 @@ export class CurrentWeatherComponent {
   }
 
   getPressureLabel(): string {
+    if (!this.weather) return '';
     const p = this.weather.pressure;
     if (p >= 1020) return 'High';
     if (p >= 1000) return 'Normal';
@@ -39,6 +43,9 @@ export class CurrentWeatherComponent {
   }
 
   getConditionGradient(): string {
+    if (!this.weather || !this.weather.condition) {
+      return 'linear-gradient(135deg, #0a0f1a, #111827, #1f2937)';
+    }
     const c = this.weather.condition.toLowerCase();
     if (c === 'clear')
       return 'linear-gradient(135deg, #0c4a6e, #0369a1, #0ea5e9)';

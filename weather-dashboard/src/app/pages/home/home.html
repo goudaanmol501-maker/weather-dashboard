@@ -1,50 +1,55 @@
 <div style="min-height:100vh; background:#030712;">
 
-    <!-- Navbar -->
-    <app-navbar (citySearched)="onCitySearch($event)"></app-navbar>
+  <!-- Navbar -->
+  <app-navbar (citySearched)="onCitySearch($event)"></app-navbar>
 
-    <!-- Loading -->
-    @if (isLoading) {
-    <div style="display:flex; flex-direction:column; align-items:center;
+  <!-- Loading -->
+  @if (isLoading()) {
+  <div style="display:flex; flex-direction:column; align-items:center;
                 justify-content:center; padding:100px 20px; gap:16px;">
-        <div class="spinner"></div>
-        <div style="font-size:11px; color:#4b5563; letter-spacing:3px;
+    <div class="spinner"></div>
+    <div style="font-size:11px; color:#4b5563; letter-spacing:3px;
                   font-family:'Courier New';">
-            FETCHING WEATHER DATA...
-        </div>
+      FETCHING WEATHER DATA...
     </div>
-    }
+  </div>
+  }
 
-    <!-- Error -->
-    @if (error && !isLoading) {
-    <div style="max-width:600px; margin:40px auto; padding:0 20px;">
-        <div style="background:rgba(239,68,68,0.1);
+  <!-- Error -->
+  @if (error() && !isLoading()) {
+  <div style="max-width:600px; margin:40px auto; padding:0 20px;">
+    <div style="background:rgba(239,68,68,0.1);
                   border:1px solid rgba(239,68,68,0.3);
                   border-radius:12px; padding:24px; text-align:center;">
-            <div style="font-size:32px; margin-bottom:10px;">⚠️</div>
-            <div style="font-size:12px; color:#f87171; letter-spacing:2px;
+      <div style="font-size:32px; margin-bottom:10px;">⚠️</div>
+      <div style="font-size:12px; color:#f87171; letter-spacing:2px;
                     font-family:'Courier New';">
-                {{ error }}
-            </div>
-        </div>
+        {{ error() }}
+      </div>
     </div>
-    }
+  </div>
+  }
 
-    <!-- Empty state -->
-    @if (!weatherData && !isLoading && !error) {
-    <div style="display:flex; flex-direction:column; align-items:center;
+  <!-- Weather Data Content -->
+  @if (weatherData() && !isLoading()) {
+  <app-current-weather [weather]="weatherData()!.current"></app-current-weather>
+  }
+
+  <!-- Empty state -->
+  @if (!weatherData() && !isLoading() && !error()) {
+  <div style="display:flex; flex-direction:column; align-items:center;
                 justify-content:center; padding:100px 20px; gap:12px;
                 text-align:center;">
-        <div style="font-size:80px;">🌍</div>
-        <div style="font-size:16px; font-weight:700; color:#f9fafb;
+    <div style="font-size:80px;">🌍</div>
+    <div style="font-size:16px; font-weight:700; color:#f9fafb;
                   letter-spacing:3px; font-family:'Courier New';">
-            SEARCH A CITY
-        </div>
-        <div style="font-size:11px; color:#4b5563; letter-spacing:2px;
-                  font-family:'Courier New';">
-            TYPE A CITY NAME ABOVE TO GET WEATHER DATA
-        </div>
+      SEARCH A CITY
     </div>
-    }
+    <div style="font-size:11px; color:#4b5563; letter-spacing:2px;
+                  font-family:'Courier New';">
+      TYPE A CITY NAME ABOVE TO GET WEATHER DATA
+    </div>
+  </div>
+  }
 
 </div>

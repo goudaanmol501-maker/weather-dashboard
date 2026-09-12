@@ -20,6 +20,7 @@ export class NavbarComponent {
 
   onSearch() {
     const city = this.searchQuery.trim();
+    console.log("city", city);
     if (!city) return;
     this.citySearched.emit(city);
   }
@@ -29,6 +30,7 @@ export class NavbarComponent {
   }
 
   onQuickSearch(city: string) {
+
     this.searchQuery = city;
     this.citySearched.emit(city);
   }

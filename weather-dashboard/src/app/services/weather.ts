@@ -75,8 +75,8 @@ export class WeatherService {
 
     return forkJoin({ current: current$, forecast: forecast$ }).pipe(
       map(({ current, forecast }) => ({
-        city: forecast.city.name,    // from forecast.city.name
-        country: forecast.city.country, // from forecast.city.country
+        city: forecast?.city?.name ?? current?.name ?? city,
+        country: forecast?.city?.country ?? current?.sys?.country ?? '',
         current: this.mapCurrent(current),
         forecast: this.mapForecast(forecast)
       }))
@@ -88,42 +88,40 @@ export class WeatherService {
   private mapCurrent(data: any): CurrentWeather {
     return {
       // location
-      city: data.name,                          // "Mumbai"
-      country: data.sys.country,                   // "IN"
-      lat: data.coord.lat,                     // 19.0144
-      lon: data.coord.lon,                     // 72.8479
+      city: data?.name ?? '',
+      country: data?.sys?.country ?? '',
+      lat: data?.coord?.lat ?? 0,
+      lon: data?.coord?.lon ?? 0,
 
       // temperature — Fahrenheit with units=imperial
-      temp: Math.round(data.main.temp),
-      feelsLike: Math.round(data.main.feels_like),
-      tempMin: Math.round(data.main.temp_min),
-      tempMax: Math.round(data.main.temp_max),
+      temp: Math.round(data?.main?.temp ?? 0),
+      feelsLike: Math.round(data?.main?.feels_like ?? data?.main?.temp ?? 0),
+      tempMin: Math.round(data?.main?.temp_min ?? data?.main?.temp ?? 0),
+      tempMax: Math.round(data?.main?.temp_max ?? data?.main?.temp ?? 0),
 
       // atmosphere
-      humidity: data.main.humidity,                 // 74
-      pressure: data.main.pressure,                 // 1012
-      visibility: Math.round(data.visibility / 1000), // 10000m → 10km
+      humidity: data?.main?.humidity ?? 0,
+      pressure: data?.main?.pressure ?? 1013,
+      visibility: data?.visibility !== undefined ? Math.round(data.visibility / 1000) : 10,
 
       // condition
-      condition: data.weather[0].main,               // "Rain"
-      description: data.weather[0].description,        // "light rain"
-      icon: data.weather[0].icon,               // "10n"
-      cloudiness: data.clouds.all,                    // 54
+      condition: data?.weather?.[0]?.main ?? 'Clear',
+      description: data?.weather?.[0]?.description ?? 'clear sky',
+      icon: data?.weather?.[0]?.icon ?? '01d',
+      cloudiness: data?.clouds?.all ?? 0,
 
       // wind
-      windSpeed: Math.round(data.wind.speed),        // mph
-      windDeg: data.wind.deg,                      // 280
-      windGust: data.wind.gust
-        ? Math.round(data.wind.gust) : 0,  // optional
+      windSpeed: Math.round(data?.wind?.speed ?? 0),
+      windDeg: data?.wind?.deg ?? 0,
+      windGust: data?.wind?.gust ? Math.round(data.wind.gust) : 0,
 
       // rain — "1h" key (current weather)
-      // only exists when it's raining — use ?. and ?? 0
-      rain1h: data.rain?.['1h'] ?? 0,             // 0.51
+      rain1h: data?.rain?.['1h'] ?? 0,
 
       // sun times — unix timestamps
-      sunrise: data.sys.sunrise,                   // 1788656083
-      sunset: data.sys.sunset,                    // 1788700795
-      timezone: data.timezone,                      // 19800 (seconds offset)
+      sunrise: data?.sys?.sunrise ?? 0,
+      sunset: data?.sys?.sunset ?? 0,
+      timezone: data?.timezone ?? 0,
     };
   }
 
